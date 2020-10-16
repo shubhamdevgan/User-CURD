@@ -129,7 +129,7 @@ class RegisterUser(ViewSet):
                             'error':'phone number already exist'
                             },status.HTTP_400_BAD_REQUEST)
         
-        user = User.objects.create(email=email,phone_number=phone_number,full_name=full_name)
+        user = User.objects.create(email=email,phone_number=phone_number,full_name=full_name,is_active=True)
         user.set_password(password)
         user.save()
 
@@ -193,6 +193,10 @@ class ChangePasswordView(APIView):
 # User Logout View
 class UserLogoutView(APIView):
     authentication_classes = (MyCustomAuth,)
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     self.db_name = request.user.db_name
+    #     return super().dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
